@@ -1,10 +1,10 @@
 /*
- autoComplete 1.0.0
+ smartComplete 1.1.0
  Licensed under the MIT license.
- https://github.com/VaJoy/autocomplete
+ https://github.com/VaJoy/smartcComplete
  */
 (function ($) {
-    $.fn.autoComplete = function (option) {
+    $.fn.smartComplete = function (option) {
         option = option || {};
         option = $.extend(true, {
             url:"",
@@ -21,7 +21,7 @@
             up_kc,
             down_kc,
             temp_dkc,
-            $ul = $("<ul class='FE-autoComplete' style='position: absolute;padding:0;margin:0;overflow:hidden;border:solid 1px "+option.borderColor+";'></ul>");
+            $ul = $("<ul style='position: absolute;padding:0;margin:0;overflow:hidden;border:solid 1px "+option.borderColor+";'></ul>");
 
         $ul.on("mouseenter",function(){
             $(this).prev().off("blur", dealKeyEvent);
@@ -37,7 +37,7 @@
             $ul.hide();
         });
 
-        $.fn.autoComplete.dealKeyEvent = $.fn.autoComplete.dealKeyEvent||function(e){
+        $.fn.smartComplete.dealKeyEvent = $.fn.smartComplete.dealKeyEvent||function(e){
             $input = $(this);
             if(e.type=="focus"){
                 if($input.data("acData")) showList($input.data("acData"));
@@ -64,7 +64,7 @@
                 if(e.type==="input"||e.type==="propertychange") preAjax();
             }
         };
-        var dealKeyEvent = $.fn.autoComplete.dealKeyEvent;
+        var dealKeyEvent = $.fn.smartComplete.dealKeyEvent;
 
         function judgeKey(kc){
             var flag = (47<kc && kc<58)?!0:kc==13?!0:kc==32?!0:kc==16?!0:kc==220?!0:(95<kc && kc<104)?!0:!1;
