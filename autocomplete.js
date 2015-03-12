@@ -13,7 +13,8 @@
             method:"post",
             matchPY:!0,   //匹配拼音输入模式下的英文字符
             reg:/'|(^\s+)|(\s+$)/g,   //不希望匹配到的字符
-            deffer:300 //防抖延时
+            deffer:300, //防抖延时
+            encode:!1  //默认不给数据编码
         }, option);
 
         var $input,
@@ -91,6 +92,7 @@
         }
 
         function callAjax(data) {
+            data = option.encode?encodeURIComponent(data):data;
             $.ajax({
                 data:{content:data},
                 url: option.url,
