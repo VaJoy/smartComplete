@@ -13,12 +13,15 @@
             fontColor:"black",
             actBgColor: "#ddd",
             actFontColor: "black",
+            fontSize:"12px",
+            maxHeight:"150px",
             method: "post",
             matchPY: !0,   //匹配拼音输入模式下的英文字符
             reg: /'|(^\s+)|(\s+$)/g,   //不希望匹配到的字符
             deffer: 300, //防抖延时
             zIndex:"9999999",
-            encode: !1  //默认提交数据不编码
+            encode: !1,  //默认提交数据不编码
+            callback : null
         }, option);
 
         var $input,
@@ -26,7 +29,7 @@
             down_kc,
             temp_dkc,
             $ul = $("<ul" + (option.ulClass ? (" class='" + option.ulClass + "'") : "")
-            + " style='position:absolute;padding-left:0;margin:0;list-style:none;z-index:"+option.zIndex+";overflow:hidden;border:solid 1px " + option.borderColor + ";'></ul>");
+            + " style='position:absolute;padding-left:0;margin:0;max-height:"+option.maxHeight+";list-style:none;z-index:"+option.zIndex+";overflow-y:scroll;border:solid 1px " + option.borderColor + ";'></ul>");
         $ul.on("mouseenter", function () {
             $(this).prev().off("blur", dealKeyEvent);
         }).on("mouseleave", function () {
@@ -39,6 +42,7 @@
             var val = $(this).text();
             $(this).parent().prev().val(val).data("acData", "");
             $ul.hide();
+            if(typeof option.callback==="function") option.callback()
         });
 
         /**
@@ -143,7 +147,7 @@
 
         /**
          * show the data-list out
-         * @param data {object} - ARRAY object as data
+         * @param data {object} - object as data
          */
         function showList(data) {
             $input.after($ul.empty().show());
@@ -153,7 +157,7 @@
                 return;
             }
             for (var i = 0; i < data.length; i++) {
-                $("<li style='position: relative;width:100%;margin:0;padding:5px;float:left;background: white;'>" + data[i] + "</li>").appendTo($ul)
+                $("<li style='position: relative;margin:0;padding:5px;display:block;background:white;font-size:"+option.fontSize+";word-break:break-all;'>" + data[i].text + "</li>").appendTo($ul)
             }
             modifyStyle();
             $input.data("acData", data)
