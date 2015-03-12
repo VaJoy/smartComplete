@@ -10,7 +10,9 @@
             url: "",
             ulClass: "",
             borderColor: "#bbb",
-            actColor: "#ddd",
+            fontColor:"black",
+            actBgColor: "#ddd",
+            actFontColor: "red",
             method: "post",
             matchPY: !0,   //匹配拼音输入模式下的英文字符
             reg: /'|(^\s+)|(\s+$)/g,   //不希望匹配到的字符
@@ -29,15 +31,19 @@
         }).on("mouseleave", function () {
             $(this).prev().on("blur", dealKeyEvent)
         }).on("mouseenter", "li", function () {  //委托
-            $(this).css("background", option.actColor)
+            $(this).css({"background":option.actBgColor,"color":option.actFontColor})
         }).on("mouseleave", "li", function () {
-            $(this).css("background", "white")
+            $(this).css({"background":"white","color":option.fontColor})
         }).on("click", "li", function () {
             var val = $(this).text();
             $(this).parent().prev().val(val).data("acData", "");
             $ul.hide();
         });
 
+        /**
+         * deal with key-press events
+         * @param e {object} - event handler
+         */
         $.fn.smartComplete.dealKeyEvent = function (e) {
             $input = $(this);
             if (e.type == "focus") {
@@ -66,8 +72,12 @@
         };
         var dealKeyEvent = $.fn.smartComplete.dealKeyEvent;
 
+        /**
+         * judge the EFFECTIVE key while typing in PINYIN mode
+         * @param isKeyup {boolean} - check for KeyUp event as TRUE
+         */
         function judgeKey(isKeyup) {
-            if (isKeyup) {  //console.log("ku ",up_kc);
+            if (isKeyup) {
                 var kc = up_kc,
                     flag = (47 < kc && kc < 58) ? !0 : kc == 13 ? !0 : kc == 32 ? !0 : kc == 16 ? !0 : kc == 191 ? !0 : kc == 220 ? !0 : (95 < kc && kc < 104) ? !0 : !1;
                 if (kc == 188 && /，$/.test($input.val())) flag = !0; //不匹配用逗号键翻页的情况
@@ -82,16 +92,20 @@
             }
         }
 
+        //starts here
         $(this).each(function () {
             if ($(this).data("bindAc")) $(this).off("keydown keyup input propertychange  focus blur", dealKeyEvent);
             $(this).data("bindAc", "1").data("sc-priorNum",0).on("keydown keyup input propertychange focus blur", dealKeyEvent);
         });
 
+        /**
+         * filter data before and reduce AJAX requests
+         */
         function preAjax() {
             var val = option.reg ? $input.val().replace(option.reg, "") : $input.val();
             if ($input.data("acTimeStamp")) clearTimeout($input.data("acTimeStamp"));
             $input.data("acTimeStamp", setTimeout(function () {
-                    if (!val) { //console.log("none ",val);
+                    if (!val) {
                         $ul.hide();
                         $input.data("acBuffer", "");
                         return;
@@ -102,6 +116,10 @@
             ))
         }
 
+        /**
+         * deal with AJAX request
+         * @param content {string} - input value as data
+         */
         function callAjax(content) {
             var priorNum = $input.data("sc-priorNum")+1;
             $input.data("sc-priorNum",priorNum);
@@ -122,6 +140,10 @@
             else showList($input.data("sc_" + content));  //数据缓存
         }
 
+        /**
+         * show the data-list out
+         * @param data {object} - ARRAY object as data
+         */
         function showList(data) {
             $input.after($ul.empty().show());
             if (!data.length) {
@@ -136,6 +158,10 @@
             $input.data("acData", data)
         }
 
+        /**
+         * modify style of the data-list, it sucks!!
+         * sometime u`d better add the "ulClass" option to fix it
+         */
         function modifyStyle() {
             var ul_bd = $ul.css("borderLeftWidth").replace("px", ""),
                 input_bd = $input.css("borderLeftWidth").replace("px", ""),
