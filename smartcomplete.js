@@ -69,7 +69,7 @@
             if(isKeyup){  //console.log("ku ",up_kc);
                 var kc = up_kc,
                     flag = (47 < kc && kc < 58) ? !0 : kc == 13 ? !0 : kc == 32 ? !0 : kc == 16 ? !0 : kc == 191 ? !0 : kc == 220 ? !0 : (95 < kc && kc < 104) ? !0 : !1;
-                if(kc==188 && /，$/.test($input.val())) flag=!0;
+                if(kc==188 && /，$/.test($input.val())) flag=!0; //不匹配用逗号键翻页的情况
                 if (flag) preAjax();
             }else{  //chrome下回车的情况
                 if ($input.data("acTimeStamp")) clearTimeout($input.data("acTimeStamp"));
@@ -101,16 +101,19 @@
             ))
         }
 
-        function callAjax(data) {
-            data = option.encode?encodeURIComponent(data):data;
+        function callAjax(content) {
+            content = option.encode?encodeURIComponent(content):content;
+            if(!$input.data("sc_"+content))
             $.ajax({
-                data:{content:data},
+                data:{content:content},
                 url: option.url,
                 type: option.method,
                 success:function(data){
-                    showList(data)
+                    showList(data);
+                    $input.data("sc_"+content,data)
                 }
-            })
+            });
+            else showList($input.data("sc_"+content));  //数据缓存
         }
 
         function showList(data){
