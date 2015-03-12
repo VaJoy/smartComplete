@@ -50,7 +50,7 @@
             if(!option.matchPY){  //不匹配拼音模式下的未选中字符
                 if(e.type==="keydown"){
                     temp_dkc = down_kc = e.keyCode;//console.log("d ",e.keyCode)
-                }else if(e.type==="keyup"){ console.log("u ",e.keyCode);
+                }else if(e.type==="keyup"){ //console.log("u ",e.keyCode);
                     up_kc = e.keyCode;
                     if(temp_dkc==229) judgeKey(up_kc);
                     down_kc=-1;
