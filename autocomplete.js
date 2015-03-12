@@ -53,7 +53,7 @@
                     up_kc = e.keyCode;
                     if(temp_dkc==229) judgeKey(up_kc);
                     down_kc=-1;
-                }else if(e.type==="input"||e.type==="propertychange"){ console.log("i ",down_kc);
+                }else if(e.type==="input"||e.type==="propertychange"){ //console.log("i ",down_kc);
                     if(down_kc==0) preAjax(); //Firefox hack
                     else if(down_kc==-1) preAjax(); //chrome下用鼠标选择拼音项
                     else if(temp_dkc!=229 && temp_dkc!=0) preAjax();
