@@ -8,6 +8,7 @@
         option = option || {};
         option = $.extend(true, {
             url:"",
+            ulClass:"",
             borderColor:"#bbb",
             actColor:"#ddd",
             method:"post",
@@ -21,8 +22,8 @@
             up_kc,
             down_kc,
             temp_dkc,
-            $ul = $("<ul style='position: absolute;padding:0;margin:0;overflow:hidden;border:solid 1px "+option.borderColor+";'></ul>");
-
+            $ul = $("<ul"+ (option.ulClass?(" class='"+option.ulClass+"'"):"")
+            + " style='position:absolute;padding-left:0;margin:0;list-style:none;overflow:hidden;border:solid 1px "+option.borderColor+";'></ul>");
         $ul.on("mouseenter",function(){
             $(this).prev().off("blur", dealKeyEvent);
         }).on("mouseleave", function () {
@@ -37,7 +38,7 @@
             $ul.hide();
         });
 
-        $.fn.smartComplete.dealKeyEvent = $.fn.smartComplete.dealKeyEvent||function(e){
+        $.fn.smartComplete.dealKeyEvent = function(e){
             $input = $(this);
             if(e.type=="focus"){
                 if($input.data("acData")) showList($input.data("acData"));
@@ -83,7 +84,7 @@
 
         $(this).each(function(){
             if($(this).data("bindAc")) $(this).off("keydown keyup input propertychange  focus blur",dealKeyEvent);
-            $(this).data("bindAc","1").on("keydown keyup input propertychange focus blur",dealKeyEvent)
+            $(this).data("bindAc","1").on("keydown keyup input propertychange focus blur",dealKeyEvent);
         });
 
         function preAjax() {
@@ -132,10 +133,14 @@
 
         function modifyStyle(){
             var ul_bd = $ul.css("borderLeftWidth").replace("px",""),
-                input_bd = $input.css("borderLeftWidth").replace("px","");
+                input_bd = $input.css("borderLeftWidth").replace("px",""),
+                input_ml = $input.css("marginLeft").replace("px",""),
+                input_mb = $input.css("marginBottom").replace("px",""),
+                top = $input.offset().top + $input.outerHeight() - input_bd;
+            if($input.parent().css("position")!=="static") top -= input_mb;
             $ul.css({
-                left: $input.offset().left  + (ul_bd - input_bd),
-                top: $input.offset().top + $input.innerHeight(),
+                left: $input.position().left  + (ul_bd - input_bd) + Number(input_ml),
+                top: top ,
                 width: $input.outerWidth() - ul_bd
             })
         }

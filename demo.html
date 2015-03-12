@@ -4,7 +4,17 @@
   <meta charset="UTF-8">
   <title>demo</title>
   <style>
-    input{outline: none;margin: 30px;
+    .ul-moveup{
+      margin-top: -50px !important;
+    }
+    div{
+      position: relative;
+      margin: 70px;
+      background: yellow;
+    }
+    div>input{
+      outline: none;
+      margin: 50px;
       padding: 5px 10px;
     }
   </style>
@@ -12,12 +22,21 @@
   <script src="smartcomplete.js" type="text/javascript"></script>
 </head>
 <body><!--onkeydown="console.log(event.keyCode,this.value)"-->
-  <input type="text" />
-  <input type="text" />
+  <input id="a" type="text"/>
+
+  <div>
+    <input type="text"/>
+    <input type="text"/>
+  </div>
   <script>
-    $("input").smartComplete({
+    $("#a").smartComplete({
+      url:"result.json"
+    });
+
+    $("div>input").smartComplete({
       url:"result.json",
-      matchPY:!1
+      matchPY:!1,
+      ulClass:"ul-moveup"
     });
   </script>
 </body>
