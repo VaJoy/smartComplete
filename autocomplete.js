@@ -92,7 +92,7 @@
 
         function callAjax(data) {
             $.ajax({
-                data:data,
+                data:{content:data},
                 url: option.url,
                 type: option.method,
                 success:function(data){
