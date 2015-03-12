@@ -33,7 +33,10 @@
     $("div>input").smartComplete({
       url:"result.json",
       matchPY:!1,
-      actFontColor:"red"
+      actFontColor:"red",
+      callback:function(data){
+        console.table(data)
+      }
     });
 
   </script>

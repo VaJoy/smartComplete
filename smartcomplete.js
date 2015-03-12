@@ -42,7 +42,7 @@
             var val = $(this).text();
             $(this).parent().prev().val(val).data("acData", "");
             $ul.hide();
-            if(typeof option.callback==="function") option.callback()
+            if(typeof option.callback==="function") option.callback($(this).data("sc-data"))
         });
 
         /**
@@ -157,7 +157,7 @@
                 return;
             }
             for (var i = 0; i < data.length; i++) {
-                $("<li style='position: relative;margin:0;padding:5px;display:block;background:white;font-size:"+option.fontSize+";word-break:break-all;'>" + data[i].text + "</li>").appendTo($ul)
+                $("<li style='position: relative;margin:0;padding:5px;display:block;background:white;font-size:"+option.fontSize+";word-break:break-all;'>" + data[i].text + "</li>").appendTo($ul).data("sc-data",data[i])
             }
             modifyStyle();
             $input.data("acData", data)
