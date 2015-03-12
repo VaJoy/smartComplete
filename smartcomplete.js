@@ -1,5 +1,5 @@
 /*
- smartComplete 1.1.0
+ smartComplete 1.1.1
  Licensed under the MIT license.
  https://github.com/VaJoy/smartcComplete
  */
@@ -49,16 +49,15 @@
 
             if(!option.matchPY){  //不匹配拼音模式下的未选中字符
                 if(e.type==="keydown"){
-                    temp_dkc = down_kc = e.keyCode;//console.log("d ",e.keyCode)
-                }else if(e.type==="keyup"){ //console.log("u ",e.keyCode);
+                    temp_dkc = -1;
+                    down_kc = e.keyCode;  //console.log("d ",e.keyCode)
+                }else if(e.type==="keyup"){ // console.log("u ", down_kc);
                     up_kc = e.keyCode;
-                    if(temp_dkc==229) judgeKey(up_kc);
-                    down_kc=-1;
-                }else if(e.type==="input"||e.type==="propertychange"){ //console.log("i ",down_kc);
-                    if(down_kc==0) preAjax(); //Firefox hack
-                    else if(down_kc==-1) preAjax(); //chrome下用鼠标选择拼音项
-                    else if(temp_dkc!=229 && temp_dkc!=0) preAjax();
-                    down_kc=-2;
+                    if(down_kc==229) judgeKey(1);
+                    temp_dkc=-2;
+                }else if(e.type==="input"||e.type==="propertychange"){  //console.log("i ",down_kc);
+                    if(down_kc!=229) preAjax();
+                    else judgeKey(); //chrome下拼音模式按回车
                 }
             }else{ //匹配拼音模式下的未选中字符
                 if(e.type==="input"||e.type==="propertychange") preAjax();
@@ -66,9 +65,20 @@
         };
         var dealKeyEvent = $.fn.smartComplete.dealKeyEvent;
 
-        function judgeKey(kc){
-            var flag = (47<kc && kc<58)?!0:kc==13?!0:kc==32?!0:kc==16?!0:kc==220?!0:(95<kc && kc<104)?!0:!1;
-            if(flag) preAjax();
+        function judgeKey(isKeyup) {
+            if(isKeyup){  //console.log("ku ",up_kc);
+                var kc = up_kc,
+                    flag = (47 < kc && kc < 58) ? !0 : kc == 13 ? !0 : kc == 32 ? !0 : kc == 16 ? !0 : kc == 191 ? !0 : kc == 220 ? !0 : (95 < kc && kc < 104) ? !0 : !1;
+                if(kc==188 && /，$/.test($input.val())) flag=!0;
+                if (flag) preAjax();
+            }else{  //chrome下回车的情况
+                if ($input.data("acTimeStamp")) clearTimeout($input.data("acTimeStamp"));
+                $input.data("acTimeStamp", setTimeout(function () {
+                    if (temp_dkc == -1) {
+                        preAjax();
+                    }
+                }, 500))
+            }
         }
 
         $(this).each(function(){
@@ -80,11 +90,11 @@
             var val = option.reg ? $input.val().replace(option.reg, "") : $input.val();
             if ($input.data("acTimeStamp")) clearTimeout($input.data("acTimeStamp"));
             $input.data("acTimeStamp" , setTimeout(function () {
-                    if (!val || val === $input.data('acBuffer')){ //为空或者数值没变
+                    if (!val){ //console.log("none ",val);
                         $ul.hide();
-                        $input.data("acData",null);
+                        $input.data("acBuffer","");
                         return;
-                    }
+                    }else if (val === $input.data('acBuffer')) return;
                     $input.data('acBuffer', val);
                     callAjax(val);
                 }, option.deffer  //防抖
