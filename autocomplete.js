@@ -11,7 +11,7 @@
             borderColor:"#bbb",
             actColor:"#ddd",
             method:"post",
-            matchPY:!1,   //匹配拼音输入模式下的英文字符
+            matchPY:!0,   //匹配拼音输入模式下的英文字符
             reg:/'|(^\s+)|(\s+$)/g,   //不希望匹配到的字符
             deffer:300 //防抖延时
         }, option);
@@ -49,15 +49,15 @@
             if(!option.matchPY){  //不匹配拼音模式下的未选中字符
                 if(e.type==="keydown"){
                     temp_dkc = down_kc = e.keyCode;//console.log("d ",e.keyCode)
-                }else if(e.type==="keyup"){//console.log("u ",e.keyCode);
+                }else if(e.type==="keyup"){ console.log("u ",e.keyCode);
                     up_kc = e.keyCode;
                     if(temp_dkc==229) judgeKey(up_kc);
                     down_kc=-1;
-                }else if(e.type==="input"||e.type==="propertychange"){//console.log("i ",down_kc);
+                }else if(e.type==="input"||e.type==="propertychange"){ console.log("i ",down_kc);
                     if(down_kc==0) preAjax(); //Firefox hack
                     else if(down_kc==-1) preAjax(); //chrome下用鼠标选择拼音项
                     else if(temp_dkc!=229 && temp_dkc!=0) preAjax();
-                    down_kc=-1;
+                    down_kc=-2;
                 }
             }else{ //匹配拼音模式下的未选中字符
                 if(e.type==="input"||e.type==="propertychange") preAjax();
@@ -85,13 +85,14 @@
                         return;
                     }
                     $input.data('acBuffer', val);
-                    callAjax();
+                    callAjax(val);
                 }, option.deffer  //防抖
             ))
         }
 
-        function callAjax() {
+        function callAjax(data) {
             $.ajax({
+                data:data,
                 url: option.url,
                 type: option.method,
                 success:function(data){
@@ -127,5 +128,5 @@
     }
 })(jQuery);
 
-//FF下拼音过程keydown值为0，
-//Chrome下拼音过程keydown值为229，且过程中无法监听回车键
+//FF下拼音过程keydown值为0，且监听不到keyup（选中时可监听到）
+//Chrome下拼音过程keydown值为229（即使选中），且过程中无法监听回车键（即使选中）
