@@ -4,12 +4,9 @@
   <meta charset="UTF-8">
   <title>demo</title>
   <style>
-    .ul-moveup{
-      margin-top: -50px !important;
-    }
     div{
-      position: relative;
-      margin: 70px;
+      position: absolute;
+      margin: 110px;
       background: yellow;
     }
     div>input{
@@ -36,7 +33,7 @@
     $("div>input").smartComplete({
       url:"result.json",
       matchPY:!1,
-      ulClass:"ul-moveup"
+      actFontColor:"red"
     });
 
   </script>

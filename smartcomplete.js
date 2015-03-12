@@ -12,11 +12,12 @@
             borderColor: "#bbb",
             fontColor:"black",
             actBgColor: "#ddd",
-            actFontColor: "red",
+            actFontColor: "black",
             method: "post",
             matchPY: !0,   //匹配拼音输入模式下的英文字符
             reg: /'|(^\s+)|(\s+$)/g,   //不希望匹配到的字符
             deffer: 300, //防抖延时
+            zIndex:"9999999",
             encode: !1  //默认提交数据不编码
         }, option);
 
@@ -25,7 +26,7 @@
             down_kc,
             temp_dkc,
             $ul = $("<ul" + (option.ulClass ? (" class='" + option.ulClass + "'") : "")
-            + " style='position:absolute;padding-left:0;margin:0;list-style:none;overflow:hidden;border:solid 1px " + option.borderColor + ";'></ul>");
+            + " style='position:absolute;padding-left:0;margin:0;list-style:none;z-index:"+option.zIndex+";overflow:hidden;border:solid 1px " + option.borderColor + ";'></ul>");
         $ul.on("mouseenter", function () {
             $(this).prev().off("blur", dealKeyEvent);
         }).on("mouseleave", function () {
@@ -163,12 +164,12 @@
          * sometime u`d better add the "ulClass" option to fix it
          */
         function modifyStyle() {
-            var ul_bd = $ul.css("borderLeftWidth").replace("px", ""),
-                input_bd = $input.css("borderLeftWidth").replace("px", ""),
-                input_ml = $input.css("marginLeft").replace("px", ""),
-                input_mb = $input.css("marginBottom").replace("px", ""),
-                top = $input.offset().top + $input.outerHeight() - input_bd;
-            if ($input.parent().css("position") !== "static") top -= input_mb;
+            var ul_bd = Number($ul.css("borderLeftWidth").replace("px", "")),
+                input_bd = Number($input.css("borderLeftWidth").replace("px", "")),
+                input_ml = Number($input.css("marginLeft").replace("px", "")),
+                input_mt = Number($input.css("marginTop").replace("px", "")),
+                top = $input.outerHeight() - input_bd + input_mt;
+            if ($input.parent().css("position") === "static") $input.parent().css("position","relative");
             $ul.css({
                 left: $input.position().left + (ul_bd - input_bd) + Number(input_ml),
                 top: top,
