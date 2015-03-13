@@ -64,7 +64,7 @@
                 if (e.type === "keydown") {
                     temp_dkc = -1;
                     down_kc = e.keyCode;  //console.log("d ",e.keyCode)
-                } else if (e.type === "keyup") { // console.log("u ", down_kc);
+                } else if (e.type === "keyup") {   //console.log("u ", e.keyCode);
                     up_kc = e.keyCode;
                     if (down_kc == 229) judgeKey(1);
                     temp_dkc = -2;
@@ -99,7 +99,7 @@
         }
 
         //starts here
-        $(this).each(function () {
+        this.each(function () {
             if ($(this).data("bindAc")) $(this).off("keydown keyup input propertychange  focus blur", dealKeyEvent);
             $(this).data("bindAc", "1").data("sc-priorNum",0).on("keydown keyup input propertychange focus blur", dealKeyEvent);
         });
@@ -181,9 +181,6 @@
                 width: $input.outerWidth() - ul_bd
             })
         }
-
+        return this
     }
 })(jQuery);
-
-//FF下拼音过程keydown值为0，且监听不到keyup（选中时可监听到）
-//Chrome下拼音过程keydown值为229（即使选中），且过程中无法监听回车键（即使选中）

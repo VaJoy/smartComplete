@@ -36,15 +36,15 @@
 
   <script>
     $("#a").smartComplete({
-      url:"result.json",  //url of SEVER
+      url:"result.json",  //服务端地址，此处我们使用JSON来模拟数据
       ulClass:"abc"
     });
 
     $("div>input").smartComplete({
       url:"result.json",
-      matchPY:!1,   //ignore the typing procedure under PINYIN mode
+      matchPY:!1,   //忽略拼音打字过程
       actFontColor:"red",
-      callback:function(data){
+      callback:function(data){  //回调，参数为选中数据项的对应数据
         console.log(data.id,data.text)
       }
     });
