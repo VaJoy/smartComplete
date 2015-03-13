@@ -14,31 +14,40 @@
       margin: 50px;
       padding: 5px 10px;
     }
+    .abc>li:nth-child(odd){
+      background: #FFFFBF !important;
+    }
+    .abc>li:hover{
+      background: #BFFFBF !important;
+      color:#FF8000 !important;
+      font-weight: bold;
+    }
   </style>
   <script src="jq.js" type="text/javascript"></script>
   <script src="smartcomplete.js" type="text/javascript"></script>
 </head>
-<body><!--onkeydown="console.log(event.keyCode,this.value)"-->
-  <input id="a" type="text"/>
+<body>
+  <input id="a" type="search" autocomplete="off"/>
 
   <div>
-    <input type="text"/>
-    <input type="text"/>
+    <input type="search" autocomplete="off"/>
+    <input type="search" autocomplete="off"/>
   </div>
+
   <script>
     $("#a").smartComplete({
-      url:"result.json"
+      url:"result.json",
+      ulClass:"abc"
     });
 
     $("div>input").smartComplete({
       url:"result.json",
-      matchPY:!1,
+      matchPY:!1,   //拼音模式下，忽略打字过程
       actFontColor:"red",
-      callback:function(data){
-        console.table(data)
+      callback:function(data){  //回调
+        console.log(data.id,data.text)
       }
     });
-
   </script>
 </body>
 </html>

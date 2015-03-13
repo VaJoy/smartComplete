@@ -14,6 +14,7 @@
             actBgColor: "#ddd",
             actFontColor: "black",
             fontSize:"12px",
+            lineHeight:"16px",
             maxHeight:"150px",
             method: "post",
             matchPY: !0,   //匹配拼音输入模式下的英文字符
@@ -29,7 +30,7 @@
             down_kc,
             temp_dkc,
             $ul = $("<ul" + (option.ulClass ? (" class='" + option.ulClass + "'") : "")
-            + " style='position:absolute;padding-left:0;margin:0;max-height:"+option.maxHeight+";list-style:none;z-index:"+option.zIndex+";overflow-y:scroll;border:solid 1px " + option.borderColor + ";'></ul>");
+            + " style='position:absolute;padding-left:0;margin:0;max-height:"+option.maxHeight+";list-style:none;background:white;z-index:"+option.zIndex+";overflow-y:auto;border:solid 1px " + option.borderColor + ";line-height:"+option.lineHeight+";font-size:"+option.fontSize+";color:"+option.fontColor+";'></ul>");
         $ul.on("mouseenter", function () {
             $(this).prev().off("blur", dealKeyEvent);
         }).on("mouseleave", function () {
@@ -37,7 +38,7 @@
         }).on("mouseenter", "li", function () {  //委托
             $(this).css({"background":option.actBgColor,"color":option.actFontColor})
         }).on("mouseleave", "li", function () {
-            $(this).css({"background":"white","color":option.fontColor})
+            $(this).css({"background":"inherit","color":option.fontColor})
         }).on("click", "li", function () {
             var val = $(this).text();
             $(this).parent().prev().val(val).data("acData", "");
@@ -157,7 +158,7 @@
                 return;
             }
             for (var i = 0; i < data.length; i++) {
-                $("<li style='position: relative;margin:0;padding:5px;display:block;background:white;font-size:"+option.fontSize+";word-break:break-all;'>" + data[i].text + "</li>").appendTo($ul).data("sc-data",data[i])
+                $("<li style='position: relative;margin:0;padding:5px;display:block;word-break:break-all;'>" + data[i].text + "</li>").appendTo($ul).data("sc-data",data[i])
             }
             modifyStyle();
             $input.data("acData", data)
