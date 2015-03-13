@@ -82,3 +82,5 @@ e.g.
         }
     });
 ```
+# License
+MIT © [VaJoy Larn](https://github.com/VaJoy)
