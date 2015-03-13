@@ -1,7 +1,7 @@
 /*
  smartComplete 1.1.1
  Licensed under the MIT license.
- https://github.com/VaJoy/smartcComplete
+ https://github.com/VaJoy/smartComplete
  */
 (function ($) {
     $.fn.smartComplete = function (option) {
@@ -19,7 +19,7 @@
             method: "post",
             matchPY: !0,   //匹配拼音输入模式下的英文字符
             reg: /'|(^\s+)|(\s+$)/g,   //不希望匹配到的字符
-            deffer: 300, //防抖延时
+            defer: 300, //防抖延时
             zIndex:"9999999",
             encode: !1,  //默认提交数据不编码
             callback : null
@@ -118,7 +118,7 @@
                     } else if (val === $input.data('acBuffer')) return;
                     $input.data('acBuffer', val);
                     callAjax(val);
-                }, option.deffer  //防抖
+                }, option.defer  //防抖
             ))
         }
 
