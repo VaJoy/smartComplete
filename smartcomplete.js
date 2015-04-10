@@ -181,6 +181,6 @@
                 width: $input.outerWidth() - ul_bd
             })
         }
-        return this
+        return $(this)
     }
 })(jQuery);
