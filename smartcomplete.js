@@ -22,6 +22,7 @@
             defer: 300, //防抖延时
             zIndex:"9999999",
             encode: !1,  //默认提交数据不编码
+            keyName:'content',//parameter name
             callback : null
         }, option);
 
@@ -131,11 +132,16 @@
             $input.data("sc-priorNum",priorNum);
             content = option.encode ? encodeURIComponent(content) : content;
             if (!$input.data("sc_" + content))
+                var tData = {};
+                tData[option.keyName] = content;
                 $.ajax({
-                    data: {content: content},
+                    data: tData,
                     url: option.url,
                     type: option.method,
                     success: function (data) {
+                        if(typeof option.transformResult === "function"){
+                            data = option.transformResult(data);
+                        }
                         $input.data("sc_" + content, data);
                         var pNum = $input.data("sc-priorNum");
                         if (pNum <= priorNum) {   //处理异步返回数据，抛弃旧请求的数据展示
