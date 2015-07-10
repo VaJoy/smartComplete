@@ -70,6 +70,22 @@ request defer time,`300`(ms) as default
 z-index of data-list,`9999999` as default
 ### encode
 BOOLEAN value, determine to encode(by `encodeURIComponent`) the data(input value) which will send to the SERVER whether or not,`FALSE` as default
+### keyName
+Default 'content',which you can change the name of parameter
+### transformResult
+Function,if your web service return the different data,you can use this function.
+e.g.
+```javascript
+	$("#form input").smartComplete({
+		url:'/serarch',
+		keyName:'sName',
+		transformResult:function(data){
+			return $.map(data.result,function(r){
+				return {'text':r.content,'id':r.sid};
+			})
+		}
+	});
+```
 ### callback
 callback function, which will be involked as you select the data-list item.
 it has one param as the data object of the list item you`ve chosen.
